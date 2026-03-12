@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirvImage PHP SDK Documentation</title>
+    <style>
+        :root {
+            --primary-color: #327bba;
+            --secondary-color: #327bba;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --code-bg: #f4f4f4;
+            --border-color: #e1e4e8;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        a { color: var(--primary-color); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; line-height: 1.6; color: var(--text-color); background-color: #fff; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 60px 0; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .badges { margin-top: 20px; }
+        .badge { display: inline-block; padding: 5px 15px; background: rgba(255,255,255,0.2); border-radius: 20px; margin: 5px; font-size: 0.9em; }
+        nav { background: #fff; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; padding: 15px 0; }
+        nav li { margin: 0 15px; }
+        nav a { color: var(--text-color); text-decoration: none; font-weight: 500; padding: 5px 10px; border-radius: 4px; transition: all 0.3s; }
+        nav a:hover { color: var(--primary-color); background: var(--bg-color); }
+        main { padding: 40px 0; }
+        section { margin-bottom: 60px; }
+        h2 { color: var(--text-color); border-bottom: 2px solid var(--text-color); padding-bottom: 10px; margin-bottom: 20px; font-size: 1.8em; padding-top: 70px; margin-top: -70px; }
+        h3 { color: var(--text-color); margin: 30px 0 15px; font-size: 1.4em; }
+        h4 { color: var(--text-color); margin: 20px 0 10px; font-size: 1.1em; }
+        p { margin-bottom: 15px; }
+        pre { background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; overflow-x: auto; margin: 15px 0; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9em; line-height: 1.5; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9em; }
+        pre code { background: none; padding: 0; }
+        .keyword { color: #d73a49; }
+        .string { color: #032f62; }
+        .comment { color: #6a737d; }
+        .variable { color: #e36209; }
+        .function { color: #6f42c1; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background: var(--bg-color); font-weight: 600; }
+        tr:hover { background: var(--bg-color); }
+        footer { background: var(--bg-color); padding: 40px 0; text-align: center; border-top: 1px solid var(--border-color); }
+        footer a { color: var(--primary-color); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { header h1 { font-size: 1.8em; } nav { position: relative; } nav ul { flex-direction: column; align-items: center; } nav li { margin: 5px 0; } pre { font-size: 0.8em; padding: 15px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>SirvImage PHP SDK</h1>
+            <p>Fluent URL builder for Sirv dynamic image transformations</p>
+            <div class="badges">
+                <span class="badge">PHP 7.4+</span>
+                <span class="badge">MIT License</span>
+                <span class="badge">v1.0.0</span>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#quickstart">Quick Start</a></li>
+            <li><a href="#constructor">Constructor</a></li>
+            <li><a href="#resize">Resize</a></li>
+            <li><a href="#crop">Crop</a></li>
+            <li><a href="#rotation">Rotation</a></li>
+            <li><a href="#format">Format</a></li>
+            <li><a href="#color">Color</a></li>
+            <li><a href="#effects">Effects</a></li>
+            <li><a href="#text">Text</a></li>
+            <li><a href="#watermark">Watermark</a></li>
+            <li><a href="#canvas">Canvas</a></li>
+            <li><a href="#frame">Frame</a></li>
+            <li><a href="#examples">Examples</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="container">
+
+            <section id="installation">
+                <h2>Installation</h2>
+                <pre><code>composer require sirv/sirv-image</code></pre>
+                <pre><code><span class="keyword">use</span> Sirv\SirvImage;</code></pre>
+            </section>
+
+            <section id="quickstart">
+                <h2>Quick Start</h2>
+                <pre><code><span class="variable">$url</span> = (<span class="keyword">new</span> <span class="function">SirvImage</span>(<span class="string">'https://demo.sirv.com/image.jpg'</span>))
+    -&gt;<span class="function">resize</span>(300, 200)
+    -&gt;<span class="function">quality</span>(80)
+    -&gt;<span class="function">format</span>(<span class="string">'webp'</span>)
+    -&gt;<span class="function">toUrl</span>();</code></pre>
+            </section>
+
+            <section id="constructor">
+                <h2>Constructor</h2>
+                <h4>new SirvImage($urlOrBase, $path = null)</h4>
+                <table>
+                    <thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>$urlOrBase</code></td><td>string</td><td>Full image URL or base URL</td></tr>
+                        <tr><td><code>$path</code></td><td>string|null</td><td>Image path when using base URL</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span> = <span class="keyword">new</span> <span class="function">SirvImage</span>(<span class="string">'https://demo.sirv.com/image.jpg'</span>);
+<span class="variable">$img</span> = <span class="keyword">new</span> <span class="function">SirvImage</span>(<span class="string">'https://demo.sirv.com'</span>, <span class="string">'/image.jpg'</span>);</code></pre>
+            </section>
+
+            <section id="resize">
+                <h2>Resize</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>resize(?int $width, ?int $height, ?string $option): self</code></td><td>Set dimensions and scale option (fit, fill, ignore, noup)</td></tr>
+                        <tr><td><code>width(int $w): self</code></td><td>Set width</td></tr>
+                        <tr><td><code>height(int $h): self</code></td><td>Set height</td></tr>
+                        <tr><td><code>scaleByLongest(int $s): self</code></td><td>Resize by longest dimension</td></tr>
+                        <tr><td><code>thumbnail(int $size = 256): self</code></td><td>Create a square thumbnail</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">resize</span>(400, 300, <span class="string">'fill'</span>)
+<span class="variable">$img</span>-&gt;<span class="function">width</span>(500)
+<span class="variable">$img</span>-&gt;<span class="function">thumbnail</span>(128)</code></pre>
+            </section>
+
+            <section id="crop">
+                <h2>Crop</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>crop(?int $width, ?int $height, ?int $x, ?int $y, ?string $type, ?int $padWidth, ?int $padHeight): self</code></td><td>Crop the image. Types: trim, poi, face</td></tr>
+                        <tr><td><code>clipPath(string $name): self</code></td><td>Apply a Photoshop clipping path</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">crop</span>(200, 150, 10, 20)
+<span class="variable">$img</span>-&gt;<span class="function">crop</span>(type: <span class="string">'face'</span>, padWidth: 50)</code></pre>
+            </section>
+
+            <section id="rotation">
+                <h2>Rotation</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>rotate(float $degrees): self</code></td><td>Rotate (-180 to 180)</td></tr>
+                        <tr><td><code>flip(): self</code></td><td>Flip vertically</td></tr>
+                        <tr><td><code>flop(): self</code></td><td>Flip horizontally</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">rotate</span>(90)</code></pre>
+            </section>
+
+            <section id="format">
+                <h2>Format &amp; Quality</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>format(string $fmt): self</code></td><td>Set output format: jpg, png, webp, optimal, original</td></tr>
+                        <tr><td><code>quality(int $q): self</code></td><td>Set JPEG quality (0-100)</td></tr>
+                        <tr><td><code>webpFallback(string $fmt): self</code></td><td>Set WebP fallback</td></tr>
+                        <tr><td><code>subsampling(string $value): self</code></td><td>Set chroma subsampling</td></tr>
+                        <tr><td><code>pngOptimize(bool $enabled = true): self</code></td><td>Enable PNG optimization</td></tr>
+                        <tr><td><code>gifLossy(int $level): self</code></td><td>Set GIF lossy compression</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">format</span>(<span class="string">'webp'</span>)-&gt;<span class="function">quality</span>(85)</code></pre>
+            </section>
+
+            <section id="color">
+                <h2>Color Adjustments</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>brightness(int $v): self</code></td><td>Adjust brightness (-100 to 100)</td></tr>
+                        <tr><td><code>contrast(int $v): self</code></td><td>Adjust contrast (-100 to 100)</td></tr>
+                        <tr><td><code>exposure(int $v): self</code></td><td>Adjust exposure (-100 to 100)</td></tr>
+                        <tr><td><code>hue(int $v): self</code></td><td>Adjust hue</td></tr>
+                        <tr><td><code>saturation(int $v): self</code></td><td>Adjust saturation</td></tr>
+                        <tr><td><code>lightness(int $v): self</code></td><td>Adjust lightness</td></tr>
+                        <tr><td><code>shadows(int $v): self</code></td><td>Adjust shadows</td></tr>
+                        <tr><td><code>highlights(int $v): self</code></td><td>Adjust highlights</td></tr>
+                        <tr><td><code>grayscale(): self</code></td><td>Convert to grayscale</td></tr>
+                        <tr><td><code>colorLevel(?int $black, ?int $white): self</code></td><td>Set color levels</td></tr>
+                        <tr><td><code>histogram(string $channel): self</code></td><td>Display histogram: r, g, b</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Color Effects</h3>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>colorize(?string $color, ?int $opacity): self</code></td><td>Apply color overlay</td></tr>
+                        <tr><td><code>colortone(?string $preset, array $options = []): self</code></td><td>Apply color tone preset or custom settings</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">colortone</span>(<span class="string">'sepia'</span>)
+<span class="variable">$img</span>-&gt;<span class="function">colortone</span>(<span class="keyword">null</span>, [<span class="string">'color'</span> =&gt; <span class="string">'ff5500'</span>, <span class="string">'level'</span> =&gt; 80, <span class="string">'mode'</span> =&gt; <span class="string">'highlights'</span>])</code></pre>
+            </section>
+
+            <section id="effects">
+                <h2>Effects</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>blur(int $v): self</code></td><td>Apply blur (0-100)</td></tr>
+                        <tr><td><code>sharpen(int $v): self</code></td><td>Apply sharpening (0-100)</td></tr>
+                        <tr><td><code>vignette(?int $value, ?string $color): self</code></td><td>Apply vignette</td></tr>
+                        <tr><td><code>opacity(int $v): self</code></td><td>Set opacity (0-100)</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">blur</span>(10)-&gt;<span class="function">sharpen</span>(50)</code></pre>
+            </section>
+
+            <section id="text">
+                <h2>Text Overlay</h2>
+                <h4>text(string $content, array $options = []): self</h4>
+                <p>Add a text overlay. Call multiple times for multiple layers.</p>
+                <table>
+                    <thead><tr><th>Option Key</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>fontSize</code></td><td>Font size in px</td></tr>
+                        <tr><td><code>fontFamily</code></td><td>Google Fonts family</td></tr>
+                        <tr><td><code>fontStyle</code></td><td>normal, italic</td></tr>
+                        <tr><td><code>fontWeight</code></td><td>300-800</td></tr>
+                        <tr><td><code>color</code></td><td>Text color</td></tr>
+                        <tr><td><code>opacity</code></td><td>0-100</td></tr>
+                        <tr><td><code>outlineWidth</code></td><td>Outline width</td></tr>
+                        <tr><td><code>outlineColor</code></td><td>Outline color</td></tr>
+                        <tr><td><code>backgroundColor</code></td><td>Background color</td></tr>
+                        <tr><td><code>align</code></td><td>left, center, right</td></tr>
+                        <tr><td><code>position</code></td><td>center, north, south, etc.</td></tr>
+                        <tr><td><code>positionX</code></td><td>X offset</td></tr>
+                        <tr><td><code>positionY</code></td><td>Y offset</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">text</span>(<span class="string">'Hello'</span>, [<span class="string">'color'</span> =&gt; <span class="string">'white'</span>, <span class="string">'fontSize'</span> =&gt; 24, <span class="string">'position'</span> =&gt; <span class="string">'center'</span>])
+    -&gt;<span class="function">text</span>(<span class="string">'World'</span>, [<span class="string">'position'</span> =&gt; <span class="string">'south'</span>])</code></pre>
+            </section>
+
+            <section id="watermark">
+                <h2>Watermark</h2>
+                <h4>watermark(string $path, array $options = []): self</h4>
+                <p>Add a watermark. Call multiple times for multiple watermarks.</p>
+                <table>
+                    <thead><tr><th>Option Key</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>position</code></td><td>center, north, tile, etc.</td></tr>
+                        <tr><td><code>scaleWidth</code></td><td>Width (px or %)</td></tr>
+                        <tr><td><code>scaleOption</code></td><td>noup, fit, fill, ignore</td></tr>
+                        <tr><td><code>rotate</code></td><td>-180 to 180</td></tr>
+                        <tr><td><code>opacity</code></td><td>0-100</td></tr>
+                        <tr><td><code>layer</code></td><td>front, back</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">watermark</span>(<span class="string">'/wm.png'</span>, [<span class="string">'position'</span> =&gt; <span class="string">'center'</span>, <span class="string">'opacity'</span> =&gt; 50])</code></pre>
+            </section>
+
+            <section id="canvas">
+                <h2>Canvas</h2>
+                <h4>canvas(array $options = []): self</h4>
+                <p>Configure canvas. Keys: width, height, color, position, opacity, aspectRatio, borderWidth, borderHeight, borderColor, borderOpacity.</p>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">canvas</span>([<span class="string">'width'</span> =&gt; 800, <span class="string">'height'</span> =&gt; 600, <span class="string">'color'</span> =&gt; <span class="string">'ffffff'</span>])
+<span class="variable">$img</span>-&gt;<span class="function">canvas</span>([<span class="string">'aspectRatio'</span> =&gt; <span class="string">'16:9'</span>])</code></pre>
+            </section>
+
+            <section id="frame">
+                <h2>Frame</h2>
+                <h4>frame(array $options = []): self</h4>
+                <p>Add a frame. Keys: style (solid, mirror, edge, dither), color, width, rimColor, rimWidth.</p>
+                <pre><code><span class="variable">$img</span>-&gt;<span class="function">frame</span>([<span class="string">'style'</span> =&gt; <span class="string">'solid'</span>, <span class="string">'color'</span> =&gt; <span class="string">'333333'</span>, <span class="string">'width'</span> =&gt; 5])</code></pre>
+            </section>
+
+            <section id="other">
+                <h2>Other</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>page(int $num): self</code></td><td>Select a PDF page</td></tr>
+                        <tr><td><code>profile(string $name): self</code></td><td>Apply a saved profile</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="url">
+                <h2>URL Generation</h2>
+                <table>
+                    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>toUrl(): string</code></td><td>Build and return the URL</td></tr>
+                        <tr><td><code>__toString(): string</code></td><td>Enables direct string casting</td></tr>
+                    </tbody>
+                </table>
+                <pre><code><span class="variable">$url</span> = <span class="variable">$img</span>-&gt;<span class="function">toUrl</span>();
+<span class="keyword">echo</span> <span class="variable">$img</span>; <span class="comment">// same as toUrl()</span></code></pre>
+            </section>
+
+            <section id="examples">
+                <h2>Full Examples</h2>
+                <h3>E-commerce Product Image</h3>
+                <pre><code><span class="variable">$url</span> = (<span class="keyword">new</span> <span class="function">SirvImage</span>(<span class="string">'https://demo.sirv.com'</span>, <span class="string">'/product.jpg'</span>))
+    -&gt;<span class="function">resize</span>(800, <span class="keyword">null</span>, <span class="string">'fill'</span>)
+    -&gt;<span class="function">crop</span>(type: <span class="string">'face'</span>)
+    -&gt;<span class="function">format</span>(<span class="string">'webp'</span>)
+    -&gt;<span class="function">quality</span>(85)
+    -&gt;<span class="function">sharpen</span>(20)
+    -&gt;<span class="function">watermark</span>(<span class="string">'/logo.png'</span>, [<span class="string">'position'</span> =&gt; <span class="string">'southeast'</span>, <span class="string">'opacity'</span> =&gt; 40])
+    -&gt;<span class="function">text</span>(<span class="string">'Sale!'</span>, [<span class="string">'color'</span> =&gt; <span class="string">'red'</span>, <span class="string">'fontSize'</span> =&gt; 32, <span class="string">'position'</span> =&gt; <span class="string">'north'</span>])
+    -&gt;<span class="function">toUrl</span>();</code></pre>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>
+                <a href="https://sirv.com/" target="_blank">Sirv Website</a> |
+                <a href="https://sirv.com/help/articles/dynamic-imaging/" target="_blank">Dynamic Imaging Docs</a> |
+                <a href="https://github.com/sirv/sirv-image-php" target="_blank">GitHub</a> |
+                <a href="https://packagist.org/packages/sirv/sirv-image" target="_blank">Packagist</a>
+            </p>
+            <p style="margin-top: 15px; color: #666;">
+                &copy;2026 Sirv Limited
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

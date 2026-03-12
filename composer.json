@@ -1,0 +1,23 @@
+{
+  "name": "sirv/sirv-client",
+  "description": "Sirv SDK for building URLs and HTML tags for images, spins, videos, 3D models, and galleries",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["sirv", "image", "cdn", "srcset", "responsive", "zoom", "spin", "360", "gallery", "3d"],
+  "autoload": {
+    "psr-4": {
+      "Sirv\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Sirv\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0|^10.0"
+  }
+}
