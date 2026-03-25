@@ -1,9 +1,20 @@
 {
-  "name": "sirv/sirv-client",
-  "description": "Sirv SDK for building URLs and HTML tags for images, spins, videos, 3D models, and galleries",
+  "name": "sirv/sirv-image",
+  "description": "Official PHP SDK for the Sirv dynamic imaging API. This SDK provides a simple way to request any modified image (dimensions, format, quality, sharpen, crop, watermark etc.) using the 100+ image transformation options in Sirv's image optimization service.",
   "type": "library",
   "license": "MIT",
-  "keywords": ["sirv", "image", "cdn", "srcset", "responsive", "zoom", "spin", "360", "gallery", "3d"],
+  "keywords": ["sirv", "image", "cdn", "srcset", "responsive", "zoom", "spin", "360", "gallery", "3d", "image-processing", "image-optimization", "image-transformation"],
+  "homepage": "https://sirv.github.io/sirv-image-php/",
+  "authors": [
+    {
+      "name": "Sirv",
+      "homepage": "https://sirv.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/sirv/sirv-image-php/issues",
+    "source": "https://github.com/sirv/sirv-image-php"
+  },
   "autoload": {
     "psr-4": {
       "Sirv\\": "src/"
